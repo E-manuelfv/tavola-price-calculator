@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPS - Backoffice Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin-page">
+    <div class="container">
+        <div class="nav-links">
+            <a href="index.html">Cliente</a>
+            <a href="admin.html" class="active">Admin</a>
+            <a href="painter.html">Pintora</a>
+        </div>
+        
+        <h2>Painel de Precificação Geral <span class="accent-text">(Távola Control)</span></h2>
+        
+        <div class="grid-2col">
+            <div>
+                <h3>1. Custos de Produção 3D</h3>
+                <div class="grid-2col">
+                    <div class="form-group">
+                        <label>Preço do kg do Filamento (R$)</label>
+                        <input type="number" id="filamentPrice" value="120" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Peso Utilizado (gramas)</label>
+                        <input type="number" id="weightUsed" value="150">
+                    </div>
+                </div>
+                <div class="grid-2col">
+                    <div class="form-group">
+                        <label>Horas de Impressão (h)</label>
+                        <input type="number" id="printHours" value="12">
+                    </div>
+                    <div class="form-group">
+                        <label>Impressora Alocada</label>
+                        <select id="printerType">
+                            <option value="BambuLab A1">BambuLab A1</option>
+                            <option value="Ender 3">Ender 3</option>
+                            <option value="K1">K1 Max</option>
+                            <option value="Outra">Outra</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h3>2. Insumos & Riscos</h3>
+                <div class="grid-2col">
+                    <div class="form-group">
+                        <label>Energia Elétrica (R$/h)</label>
+                        <input type="number" id="energyCost" value="0.45" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Depreciação Maq. (R$/h)</label>
+                        <input type="number" id="wearCost" value="0.30" step="0.01">
+                    </div>
+                </div>
+                <div class="grid-2col">
+                    <div class="form-group">
+                        <label>Lata de Primer Usado (R$)</label>
+                        <input type="number" id="primerCost" value="5.00" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Lixa & Cola (R$)</label>
+                        <input type="number" id="consumablesCost" value="3.50" step="0.01">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label id="failLabel">Taxa de Falha Estimada: 10%</label>
+                    <input type="range" id="failRate" min="0" max="50" value="10">
+                </div>
+            </div>
+
+            <div>
+                <h3>3. Pintura Artística</h3>
+                <div class="form-group toggle-container">
+                    <span style="font-size:0.85rem; color: var(--text-muted); text-transform: uppercase;">Incluir Pintura Manual</span>
+                    <label class="switch">
+                        <input type="checkbox" id="adminPaintToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div id="adminPaintSection">
+                    <div class="grid-2col">
+                        <div class="form-group">
+                            <label>Qtd de Cores Utilizadas</label>
+                            <input type="number" id="colorCount" value="5">
+                        </div>
+                        <div class="form-group">
+                            <label>Categoria de Complexidade</label>
+                            <select id="adminPaintCategory">
+                                <option value="simples">Simples (Padrão)</option>
+                                <option value="media">Média</option>
+                                <option value="premium">Premium</option>
+                                <option value="ultra">Ultra Detalhada</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Repasse sugerido para Pintora</label>
+                        <input type="number" id="painterPayout" value="30" style="border-color: var(--secondary-color);">
+                    </div>
+                </div>
+
+                <h3>4. Comercialização & Margem</h3>
+                <div class="grid-2col">
+                    <div class="form-group">
+                        <label>Canal de Venda</label>
+                        <select id="marketplace">
+                            <option value="shopee">Shopee (20%)</option>
+                            <option value="instagram">Instagram (0%)</option>
+                            <option value="mercado_livre">Mercado Livre (15%)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label id="profitLabel">Lucro Desejado: 100%</label>
+                        <input type="range" id="profitMargin" min="10" max="200" value="100">
+                    </div>
+                </div>
+
+                <div class="result-card" style="background: rgba(255, 107, 0, 0.04); border-color: rgba(255, 107, 0, 0.3);">
+                    <div class="price-row"><span>Custo Bruto de Insumos:</span><span id="calcCostBruto">R$ 0,00</span></div>
+                    <div class="price-row"><span>Custo Total Operacional:</span><span id="calcCostTotal">R$ 0,00</span></div>
+                    <div class="price-row"><span>Margem de Lucro Líquido:</span><span id="calcLucroLiquido" style="color: #00C2FF;">R$ 0,00</span></div>
+                    <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 8px 0;">
+                    <div class="price-row" style="font-weight:bold;"><span>PREÇO MÍNIMO SUGERIDO:</span><span id="adminPriceMin">R$ 0,00</span></div>
+                    <div class="price-row" style="font-weight:bold; color: var(--primary-color);"><span>PREÇO FINAL RECOMENDADO:</span><span id="adminPriceRec">R$ 0,00</span></div>
+                </div>
+
+                <button class="btn-main" id="btnGenSummary" style="background: var(--secondary-color);">Gerar Card de Orçamento</button>
+            </div>
+        </div>
+
+        <div class="result-card" id="summaryCard" style="display:none; margin-top:24px; background: var(--bg-color);">
+            <h4 style="margin-bottom:8px; border-bottom: 1px solid var(--border-color); padding-bottom:4px;">📋 Resumo Prontinho para o Cliente</h4>
+            <div id="summaryText" style="font-family: monospace; white-space: pre-wrap; font-size:0.9rem; color: var(--text-muted);"></div>
+            <button class="btn-main" id="btnCopyClip" style="background: #252533; color: white;">Copiar para WhatsApp</button>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

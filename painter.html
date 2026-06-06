@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPS - Área da Pintora</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="index.html">Cliente</a>
+            <a href="admin.html">Admin</a>
+            <a href="painter.html" class="active">Pintora</a>
+        </div>
+        
+        <h2>Precificação <span class="accent-text">Artística</span></h2>
+        
+        <div class="form-group">
+            <label>Nome da Peça</label>
+            <input type="text" id="artName" placeholder="Ex: Estatueta Geralt of Rivia">
+        </div>
+
+        <div class="form-group">
+            <label>Linha de Categoria</label>
+            <select id="artCategory">
+                <option value="Anime">Anime</option>
+                <option value="Miniatura">Miniatura / RPG</option>
+                <option value="Decorativo">Decorativo</option>
+                <option value="Cosplay">Cosplay</option>
+                <option value="Outro">Outro</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label id="painterCompLabel">Complexidade do Trabalho: Nível 3</label>
+            <input type="range" id="painterComplexity" min="1" max="5" value="3">
+        </div>
+
+        <div class="grid-2col">
+            <div class="form-group">
+                <label>Horas Gastas Reais</label>
+                <input type="number" id="artistHours" value="5">
+            </div>
+            <div class="form-group">
+                <label>Quantidade de Cores</label>
+                <input type="number" id="artistColors" value="6">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Técnicas Especializadas Aplicadas</label>
+            <div class="checkbox-group">
+                <label class="checkbox-label"><input type="checkbox" class="tech-check" value="dry"> Dry Brush</label>
+                <label class="checkbox-label"><input type="checkbox" class="tech-check" value="shadow"> Sombreamento</label>
+                <label class="checkbox-label"><input type="checkbox" class="tech-check" value="verniz"> Verniz Técnico</label>
+                <label class="checkbox-label"><input type="checkbox" class="tech-check" value="degrade"> Degradê Progressivo</label>
+                <label class="checkbox-label"><input type="checkbox" class="tech-check" value="aero"> Aerógrafo</label>
+                <label class="checkbox-label"><input type="checkbox" class="tech-check" value="weather"> Weathering</label>
+            </div>
+        </div>
+
+        <div class="result-card" style="background: rgba(0, 194, 255, 0.03); border-color: rgba(0, 194, 255, 0.3);">
+            <div class="price-row"><span>Pagamento Mínimo Justo:</span><span id="pMin" style="color: #00C2FF;">R$ 0,00</span></div>
+            <div class="price-row" style="font-weight: bold;"><span>Valor Ideal Saudável:</span><span id="pIdeal" style="color: var(--primary-color);">R$ 0,00</span></div>
+            <div class="price-row"><span>Valor de Obra Premium:</span><span id="pPremium" style="color: var(--secondary-color);">R$ 0,00</span></div>
+            <p style="font-size:0.75rem; color: var(--text-muted); text-align:center; margin-top:10px;">🎨 "Esse valor representa um pagamento saudável para seu trabalho artístico."</p>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/painter.js"></script>
+</body>
+</html>

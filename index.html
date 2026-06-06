@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Távola Price System - Simulador</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="index.html" class="active">Cliente</a>
+            <a href="admin.html">Admin</a>
+            <a href="painter.html">Pintora</a>
+        </div>
+        
+        <h2>Simulador de <span class="accent-text">Orçamento</span></h2>
+        
+        <div class="form-group">
+            <label>Tipo de Produto</label>
+            <select id="productType">
+                <option value="Action Figure">Action Figure</option>
+                <option value="Estátua Decorativa">Estátua Decorativa</option>
+                <option value="Chaveiro">Chaveiro</option>
+                <option value="Diorama">Diorama</option>
+                <option value="Cosplay Prop">Cosplay Prop</option>
+                <option value="Outro">Outro</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Descreva sua ideia</label>
+            <textarea id="ideaDescription" rows="2" placeholder="Ex: Deadpool com base texturizada..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Referência Visual</label>
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            <button class="grid-btn" style="width:100%" onclick="document.getElementById('fileInput').click()">Enviar imagem de referência</button>
+            <div class="image-preview-box" id="previewBox">
+                <span style="color: var(--text-muted); font-size:0.85rem;">Nenhuma imagem carregada</span>
+            </div>
+        </div>
+
+        <div class="form-group toggle-container">
+            <span style="font-size:0.9rem; font-weight:500;">Deseja a peça pintada?</span>
+            <label class="switch">
+                <input type="checkbox" id="paintToggle" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="form-group" id="complexityWrapper">
+            <label id="complexityLabel">Complexidade da Pintura: Intermediária</label>
+            <input type="range" id="paintComplexity" min="1" max="4" value="2">
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 6px;" id="complexityDesc">
+                "Sombras básicas e cores bem definidas."
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Tamanho da Peça</label>
+            <div class="btn-grid" id="sizeGrid">
+                <button class="grid-btn active" data-size="pequena">Pequena (até 10cm)</button>
+                <button class="grid-btn" data-size="media">Média (10-20cm)</button>
+                <button class="grid-btn" data-size="grande">Grande (20-35cm)</button>
+                <button class="grid-btn" data-size="gigante">Gigante (+35cm)</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Qualidade do Acabamento</label>
+            <select id="finishQuality">
+                <option value="economico" title="Lixamento básico e marcas sutis de camadas de impressão.">Econômico</option>
+                <option value="padrao" title="Padrão Távola: Camadas invisíveis à distância de exposição regular." selected>Padrão Távola</option>
+                <option value="premium" title="Premium Colecionador: Acabamento espelhado, zero linhas de impressão.">Premium Colecionador</option>
+            </select>
+        </div>
+
+        <div class="result-card">
+            <div class="price-row"><span>Preço Estimado Mínimo:</span><span id="priceMin" class="price-large">R$ 0,00</span></div>
+            <div class="price-row"><span>Preço Estimado Médio:</span><span id="priceMed" class="price-large">R$ 0,00</span></div>
+            <div class="price-row"><span>Preço Estimado Recomendado:</span><span id="priceMax" class="price-large">R$ 0,00</span></div>
+            <p style="font-size:0.75rem; color: var(--text-muted); text-align:center; margin-top:10px;">⚠️ Esse valor é uma estimativa aproximada.</p>
+        </div>
+
+        <button class="btn-main" id="btnWhatsapp">Solicitar orçamento oficial</button>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/calculator.js"></script>
+</body>
+</html>
