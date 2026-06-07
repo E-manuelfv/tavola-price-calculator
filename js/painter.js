@@ -6,6 +6,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const artistColors = document.getElementById("artistColors");
     const techChecks = document.querySelectorAll(".tech-check");
 
+    // Definição dos níveis acordados com a artista baseados nos custos líquidos de produção
+    const complexityLevels = {
+        1: { name: "Simples (Mão de obra: 15%)", rate: 0.15 },
+        2: { name: "Avançada (Mão de obra: 20%)", rate: 0.20 },
+        3: { name: "Master (Mão de obra: 25%)", rate: 0.25 }
+    };
+
     const cached = TPS_Storage.load("painter_input", {});
     if(cached.artName) artName.value = cached.artName;
     if(cached.artCategory) artCategory.value = cached.artCategory;
@@ -18,11 +25,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function calculatePainterCost() {
         let comp = parseInt(painterComplexity.value);
-        document.getElementById("painterCompLabel").innerText = `Complexidade do Trabalho: Nível ${comp}`;
+        // Garante que o valor fique dentro do range de 1 a 3 caso venha lixo do cache anterior
+        if (comp < 1) comp = 1;
+        if (comp > 3) comp = 3;
 
-        let valorBase = 15;
-        let addComplexidade = comp * 5;
-        let addCores = parseInt(artistColors.value) * 2;
+        const currentLevel = complexityLevels[comp];
+        document.getElementById("painterCompLabel").innerText = `Complexidade do Trabalho: ${currentLevel.name}`;
+
+        // Cálculo da base líquida de esforço técnico (Valores baseados puramente no tempo e execução manual)
+        let valorBaseEsforco = 10; 
+        let addCores = parseInt(artistColors.value || 0) * 1.5;
         
         let countTechs = 0;
         let checkedValues = [];
@@ -32,16 +44,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 checkedValues.push(cb.value);
             }
         });
-        let addTechs = countTechs * 3;
+        let addTechs = countTechs * 4;
 
-        let hoursSpent = parseFloat(artistHours.value);
-        let valorHorasIdeal = hoursSpent * 8;
+        let hoursSpent = parseFloat(artistHours.value || 0);
+        let valorHorasTrabalho = hoursSpent * 10; // Valor hora técnica de bancada limpa
 
-        let precoIdealCalculado = valorBase + addComplexidade + addCores + addTechs + valorHorasIdeal;
+        // Base líquida total gerada pelo esforço do projeto
+        let custoLiquidoMaoDeObra = valorBaseEsforco + addCores + addTechs + valorHorasTrabalho;
 
-        let precoMinimo = precoIdealCalculado * 0.80;
-        let precoPremium = precoIdealCalculado * 1.35;
+        // Aplicação das travas percentuais máximas acordadas com a artista
+        let comissaoArtistaFaturada = custoLiquidoMaoDeObra * currentLevel.rate;
 
+        // Faixas de repasse (Mínimo aceitável, Ideal acordado, Máximo teto para projetos complexos)
+        let precoMinimo = comissaoArtistaFaturada * 0.90;
+        let precoIdealCalculado = comissaoArtistaFaturada;
+        let precoPremium = comissaoArtistaFaturada * 1.15;
+
+        // Atualização da interface da área da artista
         document.getElementById("pMin").innerText = `R$ ${precoMinimo.toFixed(2).replace('.', ',')}`;
         document.getElementById("pIdeal").innerText = `R$ ${precoIdealCalculado.toFixed(2).replace('.', ',')}`;
         document.getElementById("pPremium").innerText = `R$ ${precoPremium.toFixed(2).replace('.', ',')}`;

@@ -115,8 +115,13 @@
                     </div>
                     <div class="form-group">
                         <label id="profitLabel">Lucro Desejado: 100%</label>
-                        <input type="range" id="profitMargin" min="10" max="200" value="100">
+                        <input type="range" id="profitMargin" min="0" max="300" step="5" value="100">
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <label>🤖 Conselheiro Estratégico (Otimização de Lucro)</label>
+                    <textarea id="aiAdviceBox" rows="5" readonly style="background: rgba(0, 194, 255, 0.05); border-left: 4px solid #00C2FF; font-size: 0.85rem; padding: 10px; color: var(--text-color); resize: none;">Carregando recomendações de margem...</textarea>
                 </div>
 
                 <div class="result-card" style="background: rgba(255, 107, 0, 0.04); border-color: rgba(255, 107, 0, 0.3);">
