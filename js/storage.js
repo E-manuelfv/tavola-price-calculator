@@ -9,6 +9,10 @@ const TPS_Storage = {
 };
 
 function roundToTavolaPattern(value) {
-    let base = Math.floor(value / 10) * 10;
-    return base + 9.90;
+    if (value <= 0) return 0;
+    return Math.round((value - 9.90) / 10) * 10 + 9.90;
 }
+
+window.TPS_UTILS = {
+    roundToTavolaPattern
+};

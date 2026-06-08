@@ -1,74 +1,68 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const artName = document.getElementById("artName");
-    const artCategory = document.getElementById("artCategory");
-    const painterComplexity = document.getElementById("painterComplexity");
-    const artistHours = document.getElementById("artistHours");
-    const artistColors = document.getElementById("artistColors");
-    const techChecks = document.querySelectorAll(".tech-check");
+document.addEventListener('DOMContentLoaded', () => {
+    const artName = document.getElementById('artName');
+    const artCategory = document.getElementById('artCategory');
+    const painterComplexity = document.getElementById('painterComplexity');
+    const painterCompLabel = document.getElementById('painterCompLabel');
+    const artistHours = document.getElementById('artistHours');
+    const artistColors = document.getElementById('artistColors');
+    const techChecks = document.querySelectorAll('.tech-check');
 
-    // Definição dos níveis acordados com a artista baseados nos custos líquidos de produção
-    const complexityLevels = {
-        1: { name: "Simples (Mão de obra: 15%)", rate: 0.15 },
-        2: { name: "Avançada (Mão de obra: 20%)", rate: 0.20 },
-        3: { name: "Master (Mão de obra: 25%)", rate: 0.25 }
+    const pMin = document.getElementById('pMin');
+    const pIdeal = document.getElementById('pIdeal');
+    const pPremium = document.getElementById('pPremium');
+
+    const complexityBonusMap = {
+        1: { name: 'Simples', bonusText: '+15% Bônus de Complexidade', multiplier: 1.15 },
+        2: { name: 'Avançada / Média', bonusText: '+30% Bônus de Complexidade', multiplier: 1.30 },
+        3: { name: 'Master / Ultra', bonusText: '+50% Bônus de Complexidade', multiplier: 1.50 }
     };
 
-    const cached = TPS_Storage.load("painter_input", {});
-    if(cached.artName) artName.value = cached.artName;
-    if(cached.artCategory) artCategory.value = cached.artCategory;
-    if(cached.painterComplexity) painterComplexity.value = cached.painterComplexity;
-    if(cached.artistHours) artistHours.value = cached.artistHours;
-    if(cached.artistColors) artistColors.value = cached.artistColors;
-    if(cached.checkedTechs) {
+    const cached = TPS_Storage.load('painter_input', {});
+    if (cached.artName) artName.value = cached.artName;
+    if (cached.artCategory) artCategory.value = cached.artCategory;
+    if (cached.painterComplexity) painterComplexity.value = cached.painterComplexity;
+    if (cached.artistHours) artistHours.value = cached.artistHours;
+    if (cached.artistColors) artistColors.value = cached.artistColors;
+    if (cached.checkedTechs) {
         techChecks.forEach(cb => cb.checked = cached.checkedTechs.includes(cb.value));
     }
 
-    function calculatePainterCost() {
-        let comp = parseInt(painterComplexity.value);
-        // Garante que o valor fique dentro do range de 1 a 3 caso venha lixo do cache anterior
-        if (comp < 1) comp = 1;
-        if (comp > 3) comp = 3;
+    function calculateArtistPayout() {
+        const currentComp = complexityBonusMap[painterComplexity.value] || complexityBonusMap[1];
+        painterCompLabel.innerText = `Complexidade do Trabalho: ${currentComp.name} (${currentComp.bonusText})`;
 
-        const currentLevel = complexityLevels[comp];
-        document.getElementById("painterCompLabel").innerText = `Complexidade do Trabalho: ${currentLevel.name}`;
+        const hours = parseFloat(artistHours.value) || 0;
+        const colors = parseFloat(artistColors.value) || 0;
 
-        // Cálculo da base líquida de esforço técnico (Valores baseados puramente no tempo e execução manual)
-        let valorBaseEsforco = 10; 
-        let addCores = parseInt(artistColors.value || 0) * 1.5;
-        
-        let countTechs = 0;
-        let checkedValues = [];
-        techChecks.forEach(cb => {
-            if(cb.checked) {
-                countTechs++;
-                checkedValues.push(cb.value);
-            }
+        const valorBaseEsforco = 10.00;
+        const addCores = colors * 1.50;
+
+        let selectedTechsCount = 0;
+        techChecks.forEach(check => {
+            if (check.checked) selectedTechsCount++;
         });
-        let addTechs = countTechs * 4;
+        const addTechs = selectedTechsCount * 4.00;
 
-        let hoursSpent = parseFloat(artistHours.value || 0);
-        let valorHorasTrabalho = hoursSpent * 10; // Valor hora técnica de bancada limpa
+        const valorHorasTrabalho = hours * 10.00;
+        const custoLiquidoMaoDeObra = valorBaseEsforco + addCores + addTechs + valorHorasTrabalho;
 
-        // Base líquida total gerada pelo esforço do projeto
-        let custoLiquidoMaoDeObra = valorBaseEsforco + addCores + addTechs + valorHorasTrabalho;
+        const maoDeObraIdeal = custoLiquidoMaoDeObra * currentComp.multiplier;
+        const repasseMinimoDiaria = maoDeObraIdeal * 0.90;
+        const tetoMaximoProjeto = maoDeObraIdeal * 1.20;
 
-        // Aplicação das travas percentuais máximas acordadas com a artista
-        let comissaoArtistaFaturada = custoLiquidoMaoDeObra * currentLevel.rate;
+        if (pMin) pMin.innerText = `R$ ${repasseMinimoDiaria.toFixed(2).replace('.', ',')}`;
+        if (pIdeal) pIdeal.innerText = `R$ ${maoDeObraIdeal.toFixed(2).replace('.', ',')}`;
+        if (pPremium) pPremium.innerText = `R$ ${tetoMaximoProjeto.toFixed(2).replace('.', ',')}`;
 
-        // Faixas de repasse (Mínimo aceitável, Ideal acordado, Máximo teto para projetos complexos)
-        let precoMinimo = comissaoArtistaFaturada * 0.90;
-        let precoIdealCalculado = comissaoArtistaFaturada;
-        let precoPremium = comissaoArtistaFaturada * 1.15;
+        const checkedValues = [];
+        techChecks.forEach(cb => {
+            if (cb.checked) checkedValues.push(cb.value);
+        });
 
-        // Atualização da interface da área da artista
-        document.getElementById("pMin").innerText = `R$ ${precoMinimo.toFixed(2).replace('.', ',')}`;
-        document.getElementById("pIdeal").innerText = `R$ ${precoIdealCalculado.toFixed(2).replace('.', ',')}`;
-        document.getElementById("pPremium").innerText = `R$ ${precoPremium.toFixed(2).replace('.', ',')}`;
-
-        TPS_Storage.save("painter_input", {
+        TPS_Storage.save('painter_input', {
             artName: artName.value,
             artCategory: artCategory.value,
-            painterComplexity: comp,
+            painterComplexity: painterComplexity.value,
             artistHours: artistHours.value,
             artistColors: artistColors.value,
             checkedTechs: checkedValues
@@ -76,9 +70,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     [artName, artCategory, painterComplexity, artistHours, artistColors].forEach(el => {
-        el.addEventListener("input", calculatePainterCost);
+        el.addEventListener('input', calculateArtistPayout);
     });
-    techChecks.forEach(cb => cb.addEventListener("change", calculatePainterCost));
+    techChecks.forEach(check => check.addEventListener('change', calculateArtistPayout));
 
-    calculatePainterCost();
+    calculateArtistPayout();
 });
