@@ -12,6 +12,7 @@
             <a href="index.html">Cliente</a>
             <a href="admin.html" class="active">Admin</a>
             <a href="painter.html">Pintora</a>
+            <a href="queue.html">Fila</a>
         </div>
         
         <h2>Painel de Precificação Geral <span class="accent-text">(Távola Control)</span></h2>
@@ -127,6 +128,7 @@
                 <div class="result-card" style="background: rgba(255, 107, 0, 0.04); border-color: rgba(255, 107, 0, 0.3);">
                     <div class="price-row"><span>Custo Bruto de Insumos:</span><span id="calcCostBruto">R$ 0,00</span></div>
                     <div class="price-row"><span>Custo Total Operacional:</span><span id="calcCostTotal">R$ 0,00</span></div>
+                    <div class="price-row" id="painterFeeRow" style="display:none;"><span>Repasse para artista da pintura:</span><span id="calcPainterFee">R$ 0,00</span></div>
                     <div class="price-row"><span>Margem de Lucro Líquido:</span><span id="calcLucroLiquido" style="color: #00C2FF;">R$ 0,00</span></div>
                     <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 8px 0;">
                     <div class="price-row" style="font-weight:bold;"><span>PREÇO MÍNIMO SUGERIDO:</span><span id="adminPriceMin">R$ 0,00</span></div>

@@ -172,6 +172,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const calcCostTotal = document.getElementById('calcCostTotal');
         if (calcCostTotal) calcCostTotal.innerText = `R$ ${totalCostWithArt.toFixed(2).replace('.', ',')}`;
 
+        const calcPainterFee = document.getElementById('calcPainterFee');
+        const painterFeeRow = document.getElementById('painterFeeRow');
+        if (calcPainterFee) calcPainterFee.innerText = `R$ ${painterFee.toFixed(2).replace('.', ',')}`;
+        if (painterFeeRow) painterFeeRow.style.display = isPainted ? 'flex' : 'none';
+
         const calcLucroLiquido = document.getElementById('calcLucroLiquido');
         if (calcLucroLiquido) calcLucroLiquido.innerText = `R$ ${netProfitReal.toFixed(2).replace('.', ',')}`;
 

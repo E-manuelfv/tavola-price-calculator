@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPS - Fila de Impressão</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="queue-page">
+    <div class="container">
+        <div class="nav-links">
+            <a href="index.html">Cliente</a>
+            <a href="admin.html">Admin</a>
+            <a href="painter.html">Pintora</a>
+            <a href="queue.html" class="active">Fila</a>
+        </div>
+
+        <h2>Lista de Produtos <span class="accent-text">para Impressão</span></h2>
+
+        <div class="form-group">
+            <label>Nome do Produto</label>
+            <input type="text" id="produto" placeholder="Ex: Suporte de action figure" required>
+        </div>
+
+        <div class="form-group">
+            <label>Especificações</label>
+            <textarea id="especificacoes" rows="3" placeholder="Ex: PLA, 20% infill, 3 paredes"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Link MakerWorld</label>
+            <input type="url" id="makerworld_url" placeholder="https://makerworld.com/...">
+        </div>
+
+        <button class="btn-main" id="btnAddItem">Adicionar à Fila</button>
+
+        <div class="result-card" style="margin-top: 24px; background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-bottom: 14px;">Fila Atual</h3>
+            <div id="lista-impressoes"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/queue.js"></script>
+</body>
+</html>
